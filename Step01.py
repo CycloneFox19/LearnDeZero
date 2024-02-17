@@ -1,6 +1,16 @@
+import heapq
+from symbol import comparison
 import numpy as np
 import unittest
 import weakref
+from dataclasses import dataclass, field
+from typing import Any
+import heapq
+
+@dataclass(order=True)
+class PrioritizedFunction:
+    priority : int
+    item : Any=field(compare=False)
 
 def as_array(x):
     if np.isscalar(x):
@@ -19,7 +29,7 @@ class Variable:
         
     def set_creator(self, func):
         self.creator = func
-        self.generation = func.generation + 1
+        self.generation = func.generation - 1 # changed : generation member variable is always less than or equal to 0
         
     def backward(self, retain_grad=False):
         if self.grad is None:
@@ -30,14 +40,14 @@ class Variable:
         
         def add_func(f):
             if f not in seen_set:
-                funcs.append(f)
+                f_p = PrioritizedFunction(f.generation, f) # warning : priority of f_p is exactly the instance of f.generation
+                heapq.heappush(funcs, f_p)
                 seen_set.add(f)
-                funcs.sort(key=lambda x : x.generation)
                 
         add_func(self.creator)
         
         while funcs:
-            f = funcs.pop()
+            f = heapq.heappop(funcs).item
             gys = [output().grad for output in f.outputs]
             gxs = f.backward(*gys)
             if not isinstance(gxs, tuple):
@@ -68,7 +78,7 @@ class Function:
             ys = (ys,)
         outputs = [Variable(as_array(y)) for y in ys]
         
-        self.generation = max([x.generation for x in inputs])
+        self.generation = min([x.generation for x in inputs]) # changed : generation is now negative number
         for output in outputs:
             output.set_creator(self)
             
