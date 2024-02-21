@@ -4,8 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>075a2a65-6bd0-489b-87e1-7d15bdc3286f</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>dezero\Exec.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -26,7 +25,16 @@
     <InterpreterReference Include="Global|PythonCore|3.12" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="dezero\" />
     <Folder Include="steps\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="dezero\Exec.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="steps\step21.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
