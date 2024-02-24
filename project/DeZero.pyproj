@@ -29,6 +29,9 @@
     <Folder Include="steps\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="dezero\core_simple.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="dezero\Exec.py">
       <SubType>Code</SubType>
     </Compile>
